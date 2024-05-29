@@ -30,5 +30,8 @@ public abstract class Pokemon {
     public String getNombre(){
         return nombre;
     }
+    public int getSalud(){
+        return salud;
+    }
 }
 
