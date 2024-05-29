@@ -4,12 +4,12 @@ public abstract class Pokemon {
     // TODO: Aquí va tu código 
     
     private String nombre;
-    private double salud;
-    private double puntosDeAtaque;
-    private String tipo;
+    private int salud;
+    private int puntosDeAtaque;
+    private TipoPokemon tipo;
     private String estado;
     
-    public Pokemon(String nombre, double salud, double puntosDeAtaque, String tipo, String estado){
+    public Pokemon(String nombre, int salud, int puntosDeAtaque, TipoPokemon tipo, String estado){
         this.nombre=nombre;
         this.salud=salud;
         this.puntosDeAtaque=puntosDeAtaque;
@@ -25,6 +25,8 @@ public abstract class Pokemon {
     public void entrenar(){
         
     }
-    
+    public String getNombre(){
+        return nombre;
+    }
 }
 
