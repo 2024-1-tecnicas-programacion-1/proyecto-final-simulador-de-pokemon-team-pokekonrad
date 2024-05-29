@@ -17,13 +17,15 @@ public abstract class Pokemon {
         this.estado=estado;
     }
     public void atacar(Pokemon oponente){
-        
+        int danio =(int)(this.puntosDeAtaque*TipoPokemon.obtenerMultiplicadorDeDaño(this.tipo, oponente.tipo));
+        oponente.recibirDaño(danio);
     }
-    public void recibirDaño(int daño){
+    public void recibirDaño(int danio){
         
     }
     public void entrenar(){
-        
+        this.puntosDeAtaque += 5;
+        this.salud += 10;
     }
     public String getNombre(){
         return nombre;
