@@ -1,5 +1,6 @@
 package simulador;
 import java.util.*;
+import simulador.batalla.Batalla;
 import simulador.entrenador.Entrenador;
 import simulador.pokemon.Aerodactyl;
 import simulador.pokemon.Electabuzz;
@@ -172,23 +173,31 @@ public class Principal {
                                 System.out.println("Aqui va Elegir entrenador 1");
                                 System.out.println("Escoge el primer entrenador para la batalla:");
                                 mostrarEntrenadores();
-                                
+                                int entrenador1 = (sc.nextInt()-1);
                                 validarContinuar();
                                 break;
                             case 2:
                                 System.out.println("Aqui va Elegir entrenador 2");
+                                
+                                System.out.println("Escoge el primer entrenador para la batalla:");
+                                mostrarEntrenadores();
+                                int entrenador2 = (sc.nextInt()-1);
                                 validarContinuar();
                                 break;
                             case 3:
                                 System.out.println("Aqui va Seleccionar pokemon entrenador 1");
+                                mostrarEquipoPokemon(Entrenadores.get(entrenador1));
                                 validarContinuar();
                                 break;
                             case 4:
                                 System.out.println("Aqui va Seleccionar pokemon entrenador 2");
+                                mostrarEquipoPokemon(Entrenadores.get(entrenador2));
                                 validarContinuar();
+                                
                                 break;
                             case 5:
                                 System.out.println("Aqui va Comenzar batalla");
+                                //System.out.println("Gano el pokemon " + ejecutarBatalla(pokemon1, pokemon2)); //Indicar quien es pok1 y pok2
                                 validarContinuar();
                                 break;
                             case 6:
@@ -248,8 +257,12 @@ public class Principal {
             System.out.println(contador + ". "+ e.getNombre());
         }
     }
-    public static void mostrarEquipoPokemon(){
-        
+    public static void mostrarEquipoPokemon(Entrenador entrenador){
+        int contador = 0;
+        for (Pokemon pok: entrenador.getListaDePokemones()){
+            contador++;
+            System.out.println(contador + ". " + pok);
+        }
     }
     
         //--------------- METODOS DE POKEMON ---------------\\
@@ -284,5 +297,11 @@ public class Principal {
             contador ++;
             System.out.println(contador + ". " + pok.getNombre());
         }
+    }
+        //--------------- METODOS DE BATALLA ---------------\\
+    public static String ejecutarBatalla(Pokemon pokemon1, Pokemon pokemon2){
+        Batalla nuevaBatalla = new Batalla();
+        Pokemon ganador = nuevaBatalla.inciarBatalla(pokemon1, pokemon2);
+        return ganador.getNombre();
     }
 }
