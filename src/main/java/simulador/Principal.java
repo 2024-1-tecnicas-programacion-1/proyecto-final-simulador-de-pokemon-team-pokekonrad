@@ -1,15 +1,32 @@
 package simulador;
 import java.util.*;
+import simulador.entrenador.Entrenador;
+import simulador.pokemon.Aerodactyl;
+import simulador.pokemon.Electabuzz;
+import simulador.pokemon.Gastly;
+import simulador.pokemon.Jynx;
+import simulador.pokemon.Magmar;
+import simulador.pokemon.Mime;
+import simulador.pokemon.Pokemon;
+import simulador.pokemon.Sandshrew;
+import simulador.pokemon.Seel;
+import simulador.pokemon.Tangela;
+import simulador.pokemon.Tentacool;
+import simulador.pokemon.TipoPokemon;
 
 
 public class Principal {
     
     static Scanner sc = new Scanner(System.in);
+    static Entrenador entrenador;
+    static ArrayList<Entrenador> Entrenadores = new ArrayList<>(); 
+    static ArrayList<Pokemon> Pokemones = new ArrayList<>();
     
     
     public static void main(String[] args) {
-
+        crearPokemones();
         mostrarMenu();
+        
     }
     // -------- METODOS DE MENÚ -----------------
     public static void mostrarMenu(){
@@ -28,16 +45,86 @@ public class Principal {
                         limpiarConsola();
                         switch (opcionSubmenu1) {
                             case 1:
-                                System.out.println("Aqui va el registro de un nuevo entrenador");
+                                //Aqui va el registro de un nuevo entrenador
+                                registrarNuevoEntrenador();
+                                sc.nextLine();
                                 validarContinuar();
                                 break;
                             case 2:
-                                System.out.println("Aqui va mostrar la lista de todos los entrenadores");
+                                //Aqui va mostrar la lista de todos los entrenadores
+                                if (Entrenadores.size()>0){
+                                    System.out.println("Estos son los entrenadores registrados:");
+                                    mostrarEntrenadores();
+                                }
+                                else{
+                                    System.out.println("Aun no hay entrenadores registrados.");
+                                }
+                                sc.nextLine();
                                 validarContinuar();
                                 break;
                             case 3:
-                                System.out.println("Aqui va seleccionar un entrenador");
+                                //Aqui va seleccionar un entrenador
+                                System.out.println("Selecciona un entrenador:");
+                                if(Entrenadores.size()== 0){
+                                    System.out.println("Aun no hay entrenadores registrados.");
+                                }
+                                else{
+                                    mostrarEntrenadores();
+                                    int selccionEntrenador = sc.nextInt();
+                                    if(selccionEntrenador > Entrenadores.size()){
+                                        System.out.println("Opcion invalida");
+                                    }
+                                    else{
+                                        int opcionAccionesDeEntrenador;
+                                        doWhileOpcionAccionesDeEntrenador: //Esta es la etiqueta del ciclo do while externo para luego romperlo desde el ciclo interno con un break etiqueta;
+                                        do{
+                                            limpiarConsola();
+                                            System.out.println(Entrenadores.get(selccionEntrenador-1).getNombre().toUpperCase());
+                                            System.out.println("---------------\n1.Ver equipo de Pokemones\n2.Agregar Pokemon al equipo\n3.Entrenar Pokemon\n4.Volver a gestionar entrenadores");
+                                            opcionAccionesDeEntrenador = sc.nextInt();
+                                            sc.nextLine();
+                                            limpiarConsola();
+                                            switch (opcionAccionesDeEntrenador) {
+                                                case 1:
+                                                    //Aqui va mostrar el equipo de pokemones
+                                                    if (Entrenadores.get(selccionEntrenador-1).getListaDePokemones().size()== 0){
+                                                        System.out.println("Aun no has agregado Pokemones a tu equipo");
+                                                    }
+                                                    else{
+                                                        System.out.println("Tu equipo de Pokemones esta conformado por:");
+                                                        int contador = 0;
+                                                        for (Pokemon pok: Entrenadores.get(selccionEntrenador-1).getListaDePokemones()){
+                                                            contador ++;
+                                                            System.out.println(contador + ". " + pok.getNombre());
+                                                        }
+                                                    }
+                                                    break;
+                                                case 2:
+                                                    //Aqui va agregar pokemones al equipo
+                                                    System.out.println("Selecciona un Pokemon para agregarlo a tu equipo: ");
+                                                    mostrarTodosPokemones();
+                                                    int opcionPokemonAgregar = sc.nextInt();
+                                                    Entrenadores.get(selccionEntrenador-1).agregarPokemon(Pokemones.get(opcionPokemonAgregar-1));
+                                                    System.out.println( Pokemones.get(opcionPokemonAgregar-1).getNombre() + " se agrego correctamente a tu equipo de Pokemones.");
+                                                    sc.nextLine();
+                                                    break;
+                                                case 3:
+                                                    System.out.println("Aqui va entrenar pokemon");
+                                                    break;
+                                                case 4:
+                                                    break doWhileOpcionAccionesDeEntrenador; //Aqui se rompe el ciclo externo
+
+                                                default:
+                                                    System.out.println("Opcion invalida");
+                                            }
+                                            
+
+                                        }while(opcionAccionesDeEntrenador!=4);
+                                    }
+                                }
                                 validarContinuar();
+                                sc.nextLine();
+                                limpiarConsola();
                                 break;
                             case 4:
                                 break;
@@ -56,7 +143,10 @@ public class Principal {
                         limpiarConsola();
                         switch (opcionSubmenu2) {
                             case 1:
-                                System.out.println("Aqui va ver todos los Pokemones");
+                                //Aqui va ver todos los Pokemones
+                                System.out.println("Todos los Pokemones registrados son");
+                                mostrarTodosPokemones();
+                                sc.nextLine();
                                 validarContinuar();
                                 break;
                             case 2:
@@ -80,6 +170,9 @@ public class Principal {
                         switch (opcionSubmenu3) {
                             case 1:
                                 System.out.println("Aqui va Elegir entrenador 1");
+                                System.out.println("Escoge el primer entrenador para la batalla:");
+                                mostrarEntrenadores();
+                                
                                 validarContinuar();
                                 break;
                             case 2:
@@ -121,10 +214,75 @@ public class Principal {
     public static void validarContinuar(){
         System.out.println("\nPara continuar al menu oprima ENTER->");
         sc.nextLine();
-        sc.nextLine();
+   
     }
-    // -------- METODOS DE ENTRENADOR -----------------
-    public static void registrarNuevoEntrenador(){
     
+    
+    //--------------- METODOS DE ENTRENADOR ---------------\\
+    public static void registrarNuevoEntrenador(){
+        System.out.println("Ingrese el nombre del entrenador: ");
+        String nombre = sc.next();
+        boolean existeEntrenador = false;
+        for (Entrenador e: Entrenadores){
+            if(e.getNombre().toUpperCase().equals(nombre.toUpperCase())){
+                existeEntrenador = true;
+            }
+            else{
+                continue;
+            }
+        }
+        if(existeEntrenador == true){
+            System.out.println("Este entrenador ya esta registrado");
+        }
+        else{
+            Entrenador entrenador = new Entrenador(nombre);
+            Entrenadores.add(entrenador);
+            System.out.println("Entrenador registrado con exito!");
+        }
+        //Validar si ya existe el entrenador
+    }
+    public static void mostrarEntrenadores(){
+        int contador = 0;
+        for (Entrenador e: Entrenadores) {
+            contador++;
+            System.out.println(contador + ". "+ e.getNombre());
+        }
+    }
+    public static void mostrarEquipoPokemon(){
+        
+    }
+    
+        //--------------- METODOS DE POKEMON ---------------\\
+    public static void crearPokemones(){
+        Pokemon seel = new Seel();
+        Pokemon sandshrew = new Sandshrew();
+        Pokemon Tangela = new Tangela();
+        Pokemon Tentacool = new Tentacool();
+        Pokemon Aerodactyl = new Aerodactyl();
+        Pokemon Mime = new Mime();
+        Pokemon Magmar = new Magmar();
+        Pokemon Jynx = new Jynx();
+        Pokemon Gastly = new Gastly();
+        Pokemon Electabuzz = new Electabuzz();
+        
+        
+        Pokemones.add(seel);
+        Pokemones.add(sandshrew);
+        Pokemones.add(Tangela);
+        Pokemones.add(Tentacool);
+        Pokemones.add(Aerodactyl);
+        Pokemones.add(Mime);
+        Pokemones.add(Magmar);
+        Pokemones.add(Jynx);
+        Pokemones.add(Gastly);
+        Pokemones.add(Electabuzz);
+        
+    }
+    public static void mostrarTodosPokemones(){
+        int contador = 0;
+        for (Pokemon pok: Pokemones){
+            contador ++;
+            System.out.println(contador + ". " + pok.getNombre());
+        }
     }
 }
