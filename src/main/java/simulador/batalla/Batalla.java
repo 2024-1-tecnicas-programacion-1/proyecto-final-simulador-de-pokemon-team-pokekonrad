@@ -5,8 +5,8 @@ import java.util.*;
 public class Batalla {
     Random nAleatorio = new Random();
     public Pokemon inciarBatalla(Pokemon  pokemon1, Pokemon pokemon2){
-        int saludPokemon1 = 0;
-        int saludPokemon2 = 0;
+        int saludPokemon1 = pokemon1.getSalud();
+        int saludPokemon2 = pokemon2.getSalud();
         Pokemon ganador;
         boolean primerAtaque = nAleatorio.nextBoolean();
         while (saludPokemon1 >0 && saludPokemon2>0) {
@@ -29,7 +29,6 @@ public class Batalla {
         else{
             ganador = pokemon2;
         }
-        System.out.println("Gano el pokemon " + ganador.getNombre());
         return ganador;
     }
 }

@@ -33,5 +33,11 @@ public abstract class Pokemon {
     public int getSalud(){
         return salud;
     }
+    public int getPuntosDeAtaque(){
+        return puntosDeAtaque;
+    }
+    public TipoPokemon getTipo(){
+        return tipo;
+    }
 }
 

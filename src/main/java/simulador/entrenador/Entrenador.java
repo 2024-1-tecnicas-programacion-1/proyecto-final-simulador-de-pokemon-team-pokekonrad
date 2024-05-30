@@ -15,7 +15,7 @@ public class Entrenador {
         //Añade un pokemon al equipo del entrenador
     }
     public void entrenarPokemones(Pokemon pokemon){
-        
+        pokemon.entrenar();
         //Selecciona un pokemon para entrenar, mejorando sus estadisticas
     }
     public ArrayList mostrarPokemones(){
