@@ -30,8 +30,6 @@ public class Principal {
     
     public static void main(String[] args) {
         crearPokemones();
-        
-        System.out.println("Gano: " + ejecutarBatalla(Pokemones.get(0), Pokemones.get(1)) );
         mostrarMenu();
     }
     // -------- METODOS DE MENÚ -----------------
@@ -39,6 +37,12 @@ public class Principal {
         
         int opcionMenuPrincipal;
         do{
+            System.out.println("██████╗░░█████╗░██╗░░██╗███████╗██╗░░██╗░█████╗░███╗░░██╗██████╗░░█████╗░██████╗░\n" +
+                               "██╔══██╗██╔══██╗██║░██╔╝██╔════╝██║░██╔╝██╔══██╗████╗░██║██╔══██╗██╔══██╗██╔══██╗\n" +
+                               "██████╔╝██║░░██║█████═╝░█████╗░░█████═╝░██║░░██║██╔██╗██║██████╔╝███████║██║░░██║\n" +
+                               "██╔═══╝░██║░░██║██╔═██╗░██╔══╝░░██╔═██╗░██║░░██║██║╚████║██╔══██╗██╔══██║██║░░██║\n" +
+                               "██║░░░░░╚█████╔╝██║░╚██╗███████╗██║░╚██╗╚█████╔╝██║░╚███║██║░░██║██║░░██║██████╔╝\n" +
+                               "╚═╝░░░░░░╚════╝░╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚══╝╚═╝░░╚═╝╚═╝░░╚═╝╚═════╝░\n");
             System.out.println("MENU PRINCIPAL\n--------------------------------\n1.Gestionar entrenadores\n2.Gestionar pokemones\n3.Iniciar batalla\n4.Salir ");
             opcionMenuPrincipal = sc.nextInt();
             limpiarConsola();
@@ -279,6 +283,7 @@ public class Principal {
                                     else{
                                         System.out.println("Se enfrentan " + pokemon1.getNombre() +" VS " +  pokemon2.getNombre());
                                         System.out.println("Gano el pokemon " + ejecutarBatalla(pokemon1, pokemon2));
+                                        validarContinuar();
                                         limpiarConsola();
                                     }
                                 }
