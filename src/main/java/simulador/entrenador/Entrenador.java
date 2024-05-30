@@ -18,6 +18,9 @@ public class Entrenador {
         pokemon.entrenar();
         //Selecciona un pokemon para entrenar, mejorando sus estadisticas
     }
+    public void sanarPokemones(Pokemon pokemon){
+        pokemon.sanar();
+    }
     public ArrayList mostrarPokemones(){
         return listaDePokemones;
         //Muestra la lista de los pokemones actuales del entrenador

@@ -30,15 +30,15 @@ public class Principal {
     
     public static void main(String[] args) {
         crearPokemones();
-        mostrarMenu();
         
+        System.out.println("Gano: " + ejecutarBatalla(Pokemones.get(0), Pokemones.get(1)) );
+        mostrarMenu();
     }
     // -------- METODOS DE MENÚ -----------------
     public static void mostrarMenu(){
         
         int opcionMenuPrincipal;
         do{
-            System.out.println(ejecutarBatalla(Pokemones.get(0), Pokemones.get(1)));
             System.out.println("MENU PRINCIPAL\n--------------------------------\n1.Gestionar entrenadores\n2.Gestionar pokemones\n3.Iniciar batalla\n4.Salir ");
             opcionMenuPrincipal = sc.nextInt();
             limpiarConsola();
@@ -91,7 +91,7 @@ public class Principal {
                                         do{
                                             limpiarConsola();
                                             System.out.println(Entrenadores.get(seleccionEntrenador-1).getNombre().toUpperCase());
-                                            System.out.println("---------------\n1.Ver equipo de Pokemones\n2.Agregar Pokemon al equipo\n3.Entrenar Pokemon\n4.Volver a gestionar entrenadores");
+                                            System.out.println("---------------\n1.Ver equipo de Pokemones\n2.Agregar Pokemon al equipo\n3.Entrenar Pokemon\n4.Sanar Pokemon\n5.Volver a gestionar entrenadores");
                                             opcionAccionesDeEntrenador = sc.nextInt();
                                             sc.nextLine();
                                             limpiarConsola();
@@ -103,11 +103,7 @@ public class Principal {
                                                     }
                                                     else{
                                                         System.out.println(Entrenadores.get(seleccionEntrenador-1).getNombre() + " tu equipo de Pokemones esta conformado por:");
-                                                        int contador = 0;
-                                                        for (Pokemon pok: Entrenadores.get(seleccionEntrenador-1).getListaDePokemones()){
-                                                            contador ++;
-                                                            System.out.println(contador + ". " + pok.getNombre());
-                                                        }
+                                                        mostrarEquipoPokemon(Entrenadores.get(seleccionEntrenador-1));
                                                     }
                                                     validarContinuar();
                                                     limpiarConsola();
@@ -129,6 +125,7 @@ public class Principal {
                                                         System.out.println("Aun no has agregado Pokemones a tu equipo");
                                                     }
                                                     else{
+                                                        
                                                         entrenarPokemon(Entrenadores.get(seleccionEntrenador-1));
                                                         
                                                     }
@@ -137,6 +134,17 @@ public class Principal {
                                                     limpiarConsola();
                                                     break;
                                                 case 4:
+                                                    if (Entrenadores.get(seleccionEntrenador-1).getListaDePokemones().size()== 0){
+                                                        System.out.println("Aun no has agregado Pokemones a tu equipo");
+                                                    }
+                                                    else{
+                                                        sanarPokemon(Entrenadores.get(seleccionEntrenador-1));
+                                                        
+                                                    }
+                                                    sc.nextLine();
+                                                    validarContinuar();
+                                                    limpiarConsola();
+                                                case 5:
                                                     break doWhileOpcionAccionesDeEntrenador; //Aqui se rompe el ciclo externo
 
                                                 default:
@@ -189,7 +197,7 @@ public class Principal {
                 case 3:
                     int opcionSubmenu3;
                     do {
-                        System.out.println("INICIAR BATALLA\n--------------------------------\n1.Elegir entrenador 1\n2.Elegir entrenador 2\n3.Seleccionar Pokemon de entrenador 1\n4.Seleccionar Pokemon entrenador 2\n5.Comenzar batalla\n6.Volver al menu principal");
+                        System.out.println("INICIAR BATALLA\n--------------------------------\n1.Elegir entrenador 1\n2.Elegir entrenador 2\n3.Seleccionar Pokemon del entrenador 1\n4.Seleccionar Pokemon del entrenador 2\n5.Comenzar batalla\n6.Volver al menu principal");
                         opcionSubmenu3 = sc.nextInt();
                         limpiarConsola();
                         switch (opcionSubmenu3) {
@@ -262,16 +270,16 @@ public class Principal {
                                 }
                                 else{
                                     if(pokemon1 == null){
-                                        System.out.println("No se ha elegido el Pokemon del entrenador " + entrenador1.getNombre() + "que peleará en la batalla.");
+                                        System.out.println("No se ha elegido el Pokemon del entrenador " + entrenador1.getNombre() + "que peleara en la batalla.");
                                     }
                                     else if (pokemon2 == null){
-                                        System.out.println("No se ha elegido el Pokemon del entrenador " + entrenador2.getNombre() + "que peleará en la batalla.");
+                                        System.out.println("No se ha elegido el Pokemon del entrenador " + entrenador2.getNombre() + "que peleara en la batalla.");
 
                                     }
                                     else{
-                                        System.out.println(ejecutarBatalla(pokemon1, pokemon2));
-                                        System.out.println(pokemon1.getNombre() +" Este es el 1 " +  pokemon2.getNombre() + " Este es el segundo");
+                                        System.out.println("Se enfrentan " + pokemon1.getNombre() +" VS " +  pokemon2.getNombre());
                                         System.out.println("Gano el pokemon " + ejecutarBatalla(pokemon1, pokemon2));
+                                        limpiarConsola();
                                     }
                                 }
                                 validarContinuar();
@@ -286,7 +294,17 @@ public class Principal {
                     } while (opcionSubmenu3!=6);
                     break;
                 case 4:
-                    break;
+                    System.out.println("Estas seguro de que quieres salir del juego?\n1.SI\n2.NO");
+                    if(sc.nextInt()==1){
+                        break;
+                    }
+                    else{
+                        opcionMenuPrincipal = 5;
+                    }
+                case 5:
+                    limpiarConsola();
+                    continue;
+                    
                 default:
                     System.out.println("Opcion ivalida");
                     sc.nextLine();
@@ -339,7 +357,7 @@ public class Principal {
         int contador = 0;
         for (Pokemon pok: entrenador.getListaDePokemones()){
             contador++;
-            System.out.println(contador + ". " + pok.getNombre());
+            System.out.println(contador + ". " + pok.getNombre() + ":\nSalud: " + pok.getSalud() + " HP\nAtaque: " + pok.getPuntosDeAtaque() + " Points\nTipo: " + pok.getTipo() + "\n\n");
         }
     }
     public static void entrenarPokemon(Entrenador entrenador){
@@ -351,6 +369,26 @@ public class Principal {
             entrenador.entrenarPokemones(pokEntrenado);
             System.out.println("+10HP\n+5 AttackPoints ");
             System.out.println(pokEntrenado.getNombre() + " ha sido entrenado satisfactoriamente");
+        }
+        else{
+            System.out.println("Opcion invalida");
+        }
+    }
+    public static void sanarPokemon(Entrenador entrenador){
+        System.out.println("Escoge el Pokemon que quieres sanar:");
+        mostrarEquipoPokemon(entrenador);
+        int pokASanar = sc.nextInt();
+        
+        if (pokASanar > 0 && pokASanar <=  entrenador.getListaDePokemones().size()){
+            Pokemon pokSanado = entrenador.getListaDePokemones().get(pokASanar-1);
+            if(pokSanado.getSalud()< pokSanado.getSaludPorDefecto()){
+                entrenador.sanarPokemones(pokSanado);
+                System.out.println("+" + pokSanado.getSaludPorDefecto() + " HP");
+                System.out.println(pokSanado.getNombre() + "se ha sanado satisfactoriamente");
+            }
+            else{
+                System.out.println("El pokemon no ha perdido puntos de vida.");
+            }
         }
         else{
             System.out.println("Opcion invalida");
@@ -387,7 +425,8 @@ public class Principal {
         int contador = 0;
         for (Pokemon pok: Pokemones){
             contador ++;
-            System.out.println(contador + ". " + pok.getNombre() + ":\nSalud: " + pok.getSalud() + " HP\nAtaque: " + pok.getPuntosDeAtaque() + " Points\nTipo: " + pok.getTipo() + "\n\n");        }
+            System.out.println(contador + ". " + pok.getNombre());        
+        }
     }
     public static void registrarNuevoPokemon(String nombre){
        
